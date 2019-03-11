@@ -17,7 +17,8 @@ class PlacedOnHoldServiceTest {
 
     PatronRepository patronRepository = new InMemoryPatronRepo();
     DomainEvents events = mock(DomainEvents.class);
-    PlaceOnHoldService placeOnHoldService = new PlaceOnHoldService(patronRepository, events);
+    FindAvailableBook findAvailableBook = mock(FindAvailableBook.class);
+    PlaceOnHoldService placeOnHoldService = new PlaceOnHoldService(patronRepository, events, findAvailableBook);
 
     @Test
     void shouldPublishAnEventWhenOperationWasSuccessful() {
@@ -53,15 +54,18 @@ class PlacedOnHoldServiceTest {
         return patron;
     }
 
+    /**
+     * Teach your test to actually return available books.
+     */
     AvailableBook availableBook() {
         AvailableBook book = Fixtures.circulatingBook();
-        //TODO stub something...
+        when(findAvailableBook.find(book.bookId)).thenReturn(Optional.of(book));
         return book;
     }
 
     AvailableBook availableRestrictedBook() {
         AvailableBook book = Fixtures.restrictedBook();
-        //TODO stub something...
+        when(findAvailableBook.find(book.bookId)).thenReturn(Optional.of(book));
         return book;
     }
 

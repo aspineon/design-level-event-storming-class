@@ -17,6 +17,7 @@ public class PlaceOnHoldService {
 
     private final PatronRepository patronRepository;
     private final DomainEvents domainEvents;
+    private final FindAvailableBook findAvailableBook;
 
     Result placeOnHold(PlaceOnHoldCommand command) {
         Patron patron = findPatron(command);
@@ -28,8 +29,11 @@ public class PlaceOnHoldService {
 
     }
 
+    /*
+        FindAvailableBookTask - from where to get available book? If you need new component responsible for that, inject it to this class.
+     */
     private AvailableBook findAvailableBook(PlaceOnHoldCommand command) {
-        return null; //TODO - where to find available book?
+        return findAvailableBook.find(command.getBookId()).orElseThrow(IllegalArgumentException::new);
     }
 
     private Patron findPatron(PlaceOnHoldCommand command) {

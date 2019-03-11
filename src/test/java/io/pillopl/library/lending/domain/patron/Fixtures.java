@@ -45,6 +45,10 @@ public class Fixtures {
         return new BookId(UUID.randomUUID());
     }
 
+    public static PatronId anyPatronId() {
+        return new PatronId(UUID.randomUUID());
+    }
+
     public static AvailableBook restrictedBook() {
         return new AvailableBook(anyBookId(), BookType.Restricted);
     }
